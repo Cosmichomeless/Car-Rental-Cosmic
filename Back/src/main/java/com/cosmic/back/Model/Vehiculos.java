@@ -25,15 +25,7 @@ public class Vehiculos {
     private String Motor;
     private String TipoMotor;
     private Integer anio;
-
-    @ManyToMany
-    @JoinTable(
-        name = "vehiculos_extras",
-        joinColumns = @JoinColumn(name = "VehiculoID"),
-        inverseJoinColumns = @JoinColumn(name = "extra_vehiculo")
-    )
-    private Set<Extras> extras;
-
+    private Integer ExtrasID;
 
 
     public Vehiculos(VehiculosDTO vehiculo) {
@@ -45,14 +37,7 @@ public class Vehiculos {
         this.Motor = vehiculo.getMotor();
         this.TipoMotor = vehiculo.getTipoMotor();
         this.anio = vehiculo.getAnio();
+        this.ExtrasID = vehiculo.getExtrasID();
 
-       if (vehiculo.getExtras() != null) {
-           for (ExtrasDTO extrasDTO : vehiculo.getExtras()) {
-               this.extras.add(new Extras(extrasDTO));
-           }
-       }else{
-           this.extras = new HashSet<>();
-       }
     }
-
 }

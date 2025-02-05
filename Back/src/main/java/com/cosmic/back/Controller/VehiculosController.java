@@ -22,8 +22,13 @@ public class VehiculosController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VehiculosDTO> findById(@PathVariable Integer id) {
-        return new ResponseEntity<>(vehiculosService.findById(id), HttpStatus.OK);
+    public ResponseEntity<VehiculosDTO> findById(@PathVariable int id) {
+        VehiculosDTO vehiculoDTO = vehiculosService.findById(id);
+        if (vehiculoDTO != null) {
+            return new ResponseEntity<>(vehiculoDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

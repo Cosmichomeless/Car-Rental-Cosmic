@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping ("/alquileres")
+@RequestMapping("/alquileres")
 @RestController
 public class AlquileresController {
 
@@ -17,7 +17,7 @@ public class AlquileresController {
     private AlquileresService alquileresService;
 
     @GetMapping
-    public ResponseEntity<List<AlquileresDTO>>  finAll() {
+    public ResponseEntity<List<AlquileresDTO>> findAll() {
         return new ResponseEntity<>(alquileresService.findAll(), HttpStatus.OK);
     }
 
@@ -31,12 +31,15 @@ public class AlquileresController {
         return new ResponseEntity<>(alquileresService.save(alquileresDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<AlquileresDTO> update(@RequestBody AlquileresDTO alquileresDTO) {
-        return new ResponseEntity<>(alquileresService.update(alquileresDTO), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public AlquileresDTO update(@PathVariable int id, @RequestBody AlquileresDTO alquileresDTO) {
+        alquileresDTO.setAlquilerID(id);
+        return alquileresService.update(alquileresDTO);
     }
 
-
-
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable int id) {
+        alquileresService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

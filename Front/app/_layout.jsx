@@ -17,15 +17,15 @@ export default function Layout() {
                 options={{ headerTitle: 'Inicio' }}
             />
             <Stack.Screen
-                name="components/clientsView"
+                name="views/clientsView"
                 options={{ headerTitle: 'Clientes' }}
             />
             <Stack.Screen
-                name="components/rentsView"
+                name="views/rentsView"
                 options={{ headerTitle: 'Alquileres' }}
             />
             <Stack.Screen
-                name="components/vehiclesView"
+                name="views/vehiclesView"
                 options={{ headerTitle: 'Vehículos' }}
             />
         </Stack>

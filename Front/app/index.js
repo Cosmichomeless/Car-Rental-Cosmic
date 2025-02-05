@@ -41,7 +41,7 @@ export default function Index() {
             if (data.ultimosAlquileres) {
                 const alquileres = data.ultimosAlquileres.map(alquiler => ({
                     title: alquiler.nombreCliente,  
-                    subtitle: `${alquiler.vehiculo} - Importe: ${alquiler.precio} €`,
+                    subtitle: `${alquiler.nombreCliente} - Importe: ${alquiler.precio} €`,
                 }));
                 setDatalist(alquileres);
             }
@@ -85,13 +85,13 @@ export default function Index() {
                 </View>
             </View>
             <View style={indexStyles.grid}>
-                <TouchableOpacity style={indexStyles.card} onPress={() => router.push('./components/clientsView')}>
+                <TouchableOpacity style={indexStyles.card} onPress={() => router.push('./views/clientsView')}>
                     <Text style={indexStyles.cardTextTop}>Clientes</Text>
                     <View style={indexStyles.card2}>
                         <Text style={indexStyles.cardTextBotton}>{totalclients}</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={indexStyles.card} onPress={() => router.push('./components/rentsView')}>
+                <TouchableOpacity style={indexStyles.card} onPress={() => router.push('./views/rentsView')}>
                     <Text style={indexStyles.cardTextTop}>Alquileres</Text>
                     <View style={indexStyles.card2}>
                         <Text style={indexStyles.cardTextBotton}>{totalrents}</Text>
@@ -105,7 +105,7 @@ export default function Index() {
                         <Text style={indexStyles.cardTextBotton}>{totalIncome + " €"}</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={indexStyles.card} onPress={() => router.push('./components/vehiclesView')} >
+                <TouchableOpacity style={indexStyles.card} onPress={() => router.push('./views/vehiclesView')} >
                     <Text style={indexStyles.cardTextTop}>Vehículos</Text>
                     <View style={indexStyles.card2}>
                         <Text style={indexStyles.cardTextBotton}>{totalVehicles}</Text>
@@ -156,7 +156,7 @@ export const indexStyles = StyleSheet.create({
         width: '100%',
     },
     graph: {
-        backgroundColor: colors.data,
+        backgroundColor: colors.white,
         padding: 20,
         borderRadius: 10,
         margin: 10,
@@ -172,7 +172,7 @@ export const indexStyles = StyleSheet.create({
         width: "87%",
     },
     button: {
-        backgroundColor: colors.data,
+        backgroundColor: colors.white,
         padding: 10,
         borderRadius: 10,
     },
@@ -207,7 +207,7 @@ export const indexStyles = StyleSheet.create({
         shadowRadius: 10,
     },
     card2: {
-        backgroundColor: colors.data,
+        backgroundColor: colors.white,
         padding: 20,
         borderRadius: 10,
         margin: 10,
@@ -227,6 +227,7 @@ export const indexStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
     cardTextTop: {
+        marginBottom: 5,
         color: "black",
         fontSize: 20,
         fontWeight: "bold",
@@ -238,7 +239,7 @@ export const indexStyles = StyleSheet.create({
     },
 
     listItem: {
-        backgroundColor: colors.data,
+        backgroundColor: colors.white,
         padding: 20,
         borderRadius: 10,
         marginVertical: 10,

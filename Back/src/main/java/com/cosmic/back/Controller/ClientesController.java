@@ -30,4 +30,15 @@ public class ClientesController {
     public ResponseEntity<ClientesDTO> save(@RequestBody ClientesDTO clientesDTO) {
         return new ResponseEntity<>(clientesService.save(clientesDTO), HttpStatus.CREATED);
     }
+
+    @PutMapping
+    public ResponseEntity<ClientesDTO> update(@RequestBody ClientesDTO clientesDTO) {
+        return new ResponseEntity<>(clientesService.update(clientesDTO), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable int id) {
+        clientesService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

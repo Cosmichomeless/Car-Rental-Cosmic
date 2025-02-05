@@ -18,7 +18,6 @@ public class Clientes {
     private String Nombre;
     private String Apellido;
     private String Email;
-    @Column(unique = true)
     private String DNI;
     private String Direccion;
     private String Telefono;

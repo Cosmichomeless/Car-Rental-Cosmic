@@ -4,10 +4,6 @@ import com.cosmic.back.Model.Vehiculos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Data
 @NoArgsConstructor
 public class VehiculosDTO {
@@ -20,9 +16,10 @@ public class VehiculosDTO {
     private String Motor;
     private String TipoMotor;
     private Integer anio;
-    private Set<ExtrasDTO> extras;
+    private Integer ExtrasID;
+    private String nombreExtra; // Nuevo campo
 
-    public VehiculosDTO(Vehiculos vehiculo) {
+    public VehiculosDTO(Vehiculos vehiculo, String nombreExtra) {
         this.VehiculoID = vehiculo.getVehiculoID();
         this.Matricula = vehiculo.getMatricula();
         this.Marca = vehiculo.getMarca();
@@ -31,15 +28,7 @@ public class VehiculosDTO {
         this.Motor = vehiculo.getMotor();
         this.TipoMotor = vehiculo.getTipoMotor();
         this.anio = vehiculo.getAnio();
-        if (vehiculo.getExtras() != null) {
-            this.extras = vehiculo.getExtras().stream()
-                    .map(ExtrasDTO::new)
-                    .collect(Collectors.toSet());
-        } else {
-            this.extras = new HashSet<>();
-        }
+        this.ExtrasID = vehiculo.getExtrasID();
+        this.nombreExtra = nombreExtra; // Asignación del nuevo campo
     }
-
-
 }
-

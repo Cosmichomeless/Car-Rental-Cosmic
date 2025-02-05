@@ -13,23 +13,25 @@ public class AlquileresDTO {
     private int ClienteID;
     private String nombreCliente;
     private int VehiculoID;
-    private String nombreVehiculo;
+    private String matricula;
     private Date FechaInicio;
     private Date FechaFin;
     private int Precio;
     private int FormaPagoID;
+    private String nombreFormaPago;
     private boolean Entregado;
 
-    public AlquileresDTO(Alquileres alquileres, String nombreCliente, String nombreVehiculo) {
+    public AlquileresDTO(Alquileres alquileres, String nombreCliente, String nombreVehiculo, String nombreFormaPago) {
         this.AlquilerID = alquileres.getAlquilerID();
         this.ClienteID = alquileres.getClienteID();
         this.nombreCliente = nombreCliente;
         this.VehiculoID = alquileres.getVehiculoID();
-        this.nombreVehiculo = nombreVehiculo;
+        this.matricula = nombreVehiculo;
         this.FechaInicio = alquileres.getFechaInicio();
         this.FechaFin = alquileres.getFechaFin();
         this.Precio = alquileres.getPrecio();
         this.FormaPagoID = alquileres.getFormaPagoID();
+        this.nombreFormaPago = nombreFormaPago;
         this.Entregado = alquileres.isEntregado();
     }
 

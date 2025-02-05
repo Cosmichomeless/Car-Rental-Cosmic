@@ -4,14 +4,14 @@ import com.cosmic.back.Model.Extras;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 public class ExtrasDTO {
     private int ExtraID;
     private String Nombre;
 
-    public ExtrasDTO(Extras extras) {
-        this.ExtraID = extras.getExtraID();
-        this.Nombre = extras.getNombre();
+    public ExtrasDTO(Extras extra) {
+        this.ExtraID = extra.getExtraID();
+        this.Nombre = extra.getNombre();
     }
 }
