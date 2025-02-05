@@ -5,6 +5,7 @@ import {colors} from "../constants/colors";
 import Axios from "axios";
 import {BarChart} from "react-native-gifted-charts";
 import { Ionicons } from '@expo/vector-icons';
+import {Localhost} from "../constants/Localhost";
 
 export default function Index() {
     const valueMin = 800;
@@ -12,7 +13,6 @@ export default function Index() {
     const [barData, setBarData] = useState([]);
     const [datalist, setDatalist] = useState([]);
     const [loading, setLoading] = useState(true);
-        const Localhost = '192.168.1.71';
 
 
     const fetchData = async () => {
@@ -41,7 +41,7 @@ export default function Index() {
             if (data.ultimosAlquileres) {
                 const alquileres = data.ultimosAlquileres.map(alquiler => ({
                     title: alquiler.nombreCliente,  
-                    subtitle: `${alquiler.nombreCliente} - Importe: ${alquiler.precio} €`,
+                    subtitle: `${alquiler.vehiculo} - Importe: ${alquiler.precio} €`,
                 }));
                 setDatalist(alquileres);
             }

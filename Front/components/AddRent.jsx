@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import { colors } from "../constants/colors";
 import { Localhost } from "../constants/Localhost";
+import { Picker } from '@react-native-picker/picker';
 
 export default function AddRents({ modalVisible, setModalVisible, fetchData }) {
     const [precio, setPrecio] = useState('');
@@ -12,19 +13,48 @@ export default function AddRents({ modalVisible, setModalVisible, fetchData }) {
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaFin, setFechaFin] = useState('');
 
+    const validDate = (dateString) => {
+        const regex = /^\d{4}-\d{2}-\d{2}$/;
+        return regex.test(dateString);
+    };
+
     const postRent = async () => {
+        // Validación de campos vacíos
+        if (
+            !clienteID.trim() ||
+            !vehiculoID.trim() ||
+            !precio.trim() ||
+            !formaPagoID ||
+            !fechaInicio.trim() ||
+            !fechaFin.trim()
+        ) {
+            Alert.alert('Error', 'Todos los campos son obligatorios.');
+            return;
+        }
+
+        // Validación de valores numéricos para identificadores y precio
+        if (isNaN(Number(clienteID)) || isNaN(Number(vehiculoID)) || isNaN(Number(precio))) {
+            Alert.alert('Error', 'Cliente, Vehículo e Importe deben ser números válidos.');
+            return;
+        }
+
+        // Validación del formato de fechas
+        if (!validDate(fechaInicio) || !validDate(fechaFin)) {
+            Alert.alert('Error', 'Las fechas deben tener el formato YYYY-MM-DD.');
+            return;
+        }
+
         try {
             await axios.post(`http://${Localhost}:8080/alquileres`, {
                 precio: Number(precio),
                 vehiculoID: Number(vehiculoID),
                 formaPagoID: Number(formaPagoID),
                 clienteID: Number(clienteID),
-                fechaInicio, // Debe tener formato ISO o YYYY-MM-DD según lo requiera el backend
-                fechaFin,   // Debe tener formato ISO o YYYY-MM-DD según lo requiera el backend
+                fechaInicio,
+                fechaFin,
                 entregado: false
             });
             fetchData();
-            // Reinicia los campos
             setPrecio('');
             setVehiculoID('');
             setFormaPagoID('');
@@ -34,6 +64,7 @@ export default function AddRents({ modalVisible, setModalVisible, fetchData }) {
             setModalVisible(false);
         } catch (error) {
             console.error('Error posting rent:', error);
+            Alert.alert('Error', 'No se pudo agregar el alquiler. Inténtelo de nuevo.');
         }
     };
 
@@ -49,32 +80,35 @@ export default function AddRents({ modalVisible, setModalVisible, fetchData }) {
                     <Text style={styles.modalTitle}>Agregar Alquiler</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Precio"
-                        value={precio}
-                        onChangeText={setPrecio}
+                        placeholder="Identificador Cliente"
+                        value={clienteID}
+                        onChangeText={setClienteID}
                         keyboardType="numeric"
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Vehículo ID"
+                        placeholder="Identificador Vehículo"
                         value={vehiculoID}
                         onChangeText={setVehiculoID}
                         keyboardType="numeric"
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Forma de Pago ID"
-                        value={formaPagoID}
-                        onChangeText={setFormaPagoID}
+                        placeholder="Importe"
+                        value={precio}
+                        onChangeText={setPrecio}
                         keyboardType="numeric"
                     />
-                    <TextInput
+                    <Picker
+                        selectedValue={formaPagoID}
                         style={styles.input}
-                        placeholder="Cliente ID"
-                        value={clienteID}
-                        onChangeText={setClienteID}
-                        keyboardType="numeric"
-                    />
+                        onValueChange={(itemValue) => setFormaPagoID(itemValue)}
+                    >
+                        <Picker.Item label="Seleccione una forma de pago" value="" />
+                        <Picker.Item label="Efectivo" value="1" />
+                        <Picker.Item label="Tarjeta de Crédito" value="2" />
+                        <Picker.Item label="Transferencia Bancaria" value="3" />
+                    </Picker>
                     <TextInput
                         style={styles.input}
                         placeholder="Fecha Inicio (YYYY-MM-DD)"

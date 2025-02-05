@@ -1,9 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { colors } from "../constants/colors";
 import { Localhost } from "../constants/Localhost";
-import { useEffect } from 'react';
 
 export default function DetailsClient({ modalVisible, setModalVisible, fetchData }) {
     const [Nombre, setNombre] = useState('');
@@ -13,9 +12,30 @@ export default function DetailsClient({ modalVisible, setModalVisible, fetchData
     const [Telefono, setTelefono] = useState('');
     const [Direccion, setDireccion] = useState('');
 
-
-
     const postCliente = async () => {
+        // Verificar campos vacíos
+        if (!Nombre.trim() || !Apellido.trim() || !Email.trim() || !Dni.trim() || !Telefono.trim() || !Direccion.trim()) {
+            Alert.alert('Error', 'Todos los campos son obligatorios.');
+            return;
+        }
+
+        // Validación del correo electrónico
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(Email)) {
+            Alert.alert('Error', 'El correo electrónico no es válido.');
+            return;
+        }
+
+        // Validación de que DNI y Teléfono sean numéricos
+        if (isNaN(Number(Dni))) {
+            Alert.alert('Error', 'El DNI debe ser numérico.');
+            return;
+        }
+        if (isNaN(Number(Telefono))) {
+            Alert.alert('Error', 'El teléfono debe ser numérico.');
+            return;
+        }
+
         try {
             await axios.post(`http://${Localhost}:8080/clientes`, {
                 nombre: Nombre,
@@ -35,9 +55,9 @@ export default function DetailsClient({ modalVisible, setModalVisible, fetchData
             setModalVisible(false);
         } catch (error) {
             console.error('Error posting client:', error);
+            Alert.alert('Error', 'No se pudo agregar el cliente. Inténtelo de nuevo.');
         }
     };
-
 
     return (
         <Modal
@@ -68,20 +88,22 @@ export default function DetailsClient({ modalVisible, setModalVisible, fetchData
                         placeholder="Email"
                         value={Email}
                         onChangeText={setEmail}
+                        keyboardType="email-address"
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="DNI"
                         value={Dni}
                         onChangeText={setDni}
+                        keyboardType="numeric"
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="Teléfono"
                         value={Telefono}
                         onChangeText={setTelefono}
+                        keyboardType="numeric"
                     />
-
                     <TextInput
                         style={styles.input}
                         placeholder="Dirección"
@@ -121,10 +143,6 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 10,
-    },
-    modalText: {
-        fontSize: 18,
-        marginBottom: 20,
     },
     input: {
         width: '100%',

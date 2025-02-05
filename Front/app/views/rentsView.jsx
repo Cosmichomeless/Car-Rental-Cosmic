@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { colors } from '../../constants/colors';
 import { Localhost } from '../../constants/Localhost';
 import axios from 'axios';
@@ -9,7 +9,6 @@ import AddRents from '../../components/AddRent';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-// Función para formatear la fecha (Día Mes Año)
 const formatDate = (dateString) => {
     if (!dateString) return '';
     const options = { year: 'numeric', month: 'long', day: '2-digit' };
@@ -22,6 +21,7 @@ export default function RentsView() {
     const [modalVisibleDetails, setDetailsVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const fetchData = async () => {
         try {
@@ -49,17 +49,41 @@ export default function RentsView() {
         }
     };
 
+    const filteredData = data.filter(item => {
+        const search = searchTerm.toLowerCase();
+        const fullName = `${item.nombreCliente} ${item.apellido || ''}`.toLowerCase();
+        const matricula = item.matricula ? item.matricula.toLowerCase() : '';
+        return fullName.includes(search) || matricula.includes(search);
+    });
+
+    const toggleDeliveryStatus = async () => {
+        if (!selectedItem || !selectedItem.alquilerID) return;
+        try {
+            await axios.put(`http://${Localhost}:8080/alquileres/${selectedItem.alquilerID}`, {
+                ...selectedItem,
+                entregado: !selectedItem.entregado
+            });
+            fetchData();
+            setDetailsVisible(false);
+        } catch (error) {
+            console.error("Error updating rent:", error);
+        }
+    }
+
     return (
         <View style={styles.container}>
             {loading ? (
                 <ActivityIndicator size="large" color={colors.primary} />
             ) : (
                 <View style={styles.card}>
+
                     <DetailsRents
                         modalVisible={modalVisibleDetails}
                         setModalVisible={setDetailsVisible}
                         selectedItem={selectedItem}
                         onDelete={deleteRent}
+                        updateState={toggleDeliveryStatus}
+
                     />
                     <AddRents
                         modalVisible={modalVisible}
@@ -74,10 +98,17 @@ export default function RentsView() {
                         <TouchableOpacity style={styles.button} onPress={fetchData}>
                             <Ionicons name="refresh" size={24} color="black" />
                         </TouchableOpacity>
+
                     </View>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Buscar alquiler..."
+                        value={searchTerm}
+                        onChangeText={setSearchTerm}
+                    />
                     <FlatList
                         style={{ width: '100%', marginTop: 10 }}
-                        data={data}
+                        data={filteredData}
                         renderItem={({ item }) => (
                             <ItemRents
                                 title={`Cliente: ${item.nombreCliente} | Coche: ${item.matricula}`}
@@ -111,7 +142,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         margin: 10,
         width: '90%',
-        minHeight: '90%',
+        height: '90%',
+        minHeight: '80%',
         justifyContent: 'center',
         alignItems: 'center',
         elevation: 5,
@@ -131,5 +163,16 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 24,
         fontWeight: 'bold',
+    },
+    input: {
+        width: '100%',
+        height: '6%',
+        padding: 10,
+        borderWidth: 1,
+        backgroundColor: colors.white,
+        borderColor: colors.data,
+        borderRadius: 10,
+        marginBottom: 10,
+        marginTop: 20,
     },
 });

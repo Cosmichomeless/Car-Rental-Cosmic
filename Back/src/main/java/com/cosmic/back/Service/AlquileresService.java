@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -66,11 +67,41 @@ public class AlquileresService {
     }
 
     public AlquileresDTO update(AlquileresDTO alquileresDTO) {
-        Alquileres alquiler = new Alquileres(alquileresDTO);
+        Alquileres alquiler = alquileresRepository.findById(alquileresDTO.getAlquilerID())
+                .orElseThrow(() -> new NoSuchElementException("Alquiler no encontrado"));
+
+        if (alquileresDTO.getClienteID() != 0) {
+            alquiler.setClienteID(alquileresDTO.getClienteID());
+        }
+        if (alquileresDTO.getVehiculoID() != 0) {
+            alquiler.setVehiculoID(alquileresDTO.getVehiculoID());
+        }
+        if (alquileresDTO.getFechaInicio() != null) {
+            alquiler.setFechaInicio(alquileresDTO.getFechaInicio());
+        }
+        if (alquileresDTO.getFechaFin() != null) {
+            alquiler.setFechaFin(alquileresDTO.getFechaFin());
+        }
+        if (alquileresDTO.getPrecio() != 0) {
+            alquiler.setPrecio(alquileresDTO.getPrecio());
+        }
+        if (alquileresDTO.getFormaPagoID() != 0) {
+            alquiler.setFormaPagoID(alquileresDTO.getFormaPagoID());
+        }
+        alquiler.setEntregado(alquileresDTO.isEntregado());
+
         alquileresRepository.save(alquiler);
-        String nombreCliente = clienteRepository.findById(alquiler.getClienteID()).orElseThrow().getNombre();
-        String nombreVehiculo = vehiculoRepository.findById(alquiler.getVehiculoID()).orElseThrow().getMatricula();
-        String nombreFormaPago = formasPagoRepository.findById(alquiler.getFormaPagoID()).orElseThrow().getNombre();
+
+        String nombreCliente = clienteRepository.findById(alquiler.getClienteID())
+                .map(Clientes::getNombre)
+                .orElse("Cliente no encontrado");
+        String nombreVehiculo = vehiculoRepository.findById(alquiler.getVehiculoID())
+                .map(Vehiculos::getMatricula)
+                .orElse("Vehículo no encontrado");
+        String nombreFormaPago = formasPagoRepository.findById(alquiler.getFormaPagoID())
+                .map(FormasPago::getNombre)
+                .orElse("Forma de pago no encontrada");
+
         return new AlquileresDTO(alquiler, nombreCliente, nombreVehiculo, nombreFormaPago);
     }
 

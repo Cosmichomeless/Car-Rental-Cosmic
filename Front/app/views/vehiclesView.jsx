@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, TextInput } from "react-native";
 import { colors } from "../../constants/colors";
 import { Localhost } from "../../constants/Localhost";
 import axios from "axios";
@@ -14,6 +14,7 @@ export default function VehiclesView() {
     const [modalVisibleDetails, setDetailsVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchData();
@@ -29,6 +30,7 @@ export default function VehiclesView() {
             console.error('Error fetching data:', error);
         }
     };
+
     const deleteVehicle = async () => {
         if (!selectedItem || !selectedItem.vehiculoID) return;
         try {
@@ -40,7 +42,13 @@ export default function VehiclesView() {
         }
     };
 
-
+    const filteredData = data.filter(item => {
+        return (
+            (item.marca && item.marca.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item.modelo && item.modelo.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item.matricula && item.matricula.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+    });
 
     return (
         <View style={styles.container}>
@@ -48,6 +56,7 @@ export default function VehiclesView() {
                 <ActivityIndicator size="large" color={colors.primary} />
             ) : (
                 <View style={styles.card}>
+
                     <DetailsVehicles
                         modalVisible={modalVisibleDetails}
                         setModalVisible={setDetailsVisible}
@@ -68,9 +77,15 @@ export default function VehiclesView() {
                             <Ionicons name="refresh" size={24} color="black" />
                         </TouchableOpacity>
                     </View>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Buscar..."
+                        value={searchTerm}
+                        onChangeText={setSearchTerm}
+                    />
                     <FlatList
                         style={{ width: '100%', marginTop: 10 }}
-                        data={data}
+                        data={filteredData}
                         renderItem={({ item }) => (
                             <ItemVehicle
                                 title={`Modelo: ${item.marca} ${item.modelo}`}
@@ -103,7 +118,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         margin: 10,
         width: '90%',
-        minHeight: '90%',
+        minHeight: '80%',
         justifyContent: "center",
         alignItems: "center",
         elevation: 5,
@@ -123,5 +138,16 @@ const styles = StyleSheet.create({
         color: "black",
         fontSize: 24,
         fontWeight: "bold",
+    },
+    input: {
+        width: '100%',
+        height: '6%',
+        padding: 10,
+        borderWidth: 1,
+        backgroundColor: colors.white,
+        borderColor: colors.data,
+        borderRadius: 10,
+        marginBottom: 10,
+        marginTop: 20,
     },
 });

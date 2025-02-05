@@ -13,11 +13,10 @@ export default function DetailsRents({ modalVisible, setModalVisible, selectedIt
             animationType="fade"
             transparent={true}
             visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
+            onRequestClose={() => setModalModalVisible(false)}
         >
             <View style={styles.overlay}>
                 <View style={styles.modalContainer}>
-
                     <Text style={styles.modalTitle}>Detalles del Alquiler</Text>
                     <Text style={styles.modalText}>Identificador Alquiler: {selectedItem?.alquilerID}</Text>
                     <Text style={styles.modalText}>Nombre: {selectedItem?.nombreCliente}</Text>
@@ -26,27 +25,29 @@ export default function DetailsRents({ modalVisible, setModalVisible, selectedIt
                     <Text style={styles.modalText}>Fecha de Inicio: {formatDate(selectedItem?.fechaInicio)}</Text>
                     <Text style={styles.modalText}>Fecha de Salida: {formatDate(selectedItem?.fechaFin)}</Text>
                     <Text style={styles.modalText}>Tipo de pago: {selectedItem?.nombreFormaPago}</Text>
-                    <Text style={styles.modalText}>Estado: {selectedItem?.estado ? 'Entregado' : 'Pendiente'}</Text>
+                    <Text style={styles.modalText}>Estado: {selectedItem?.entregado ? 'Entregado' : 'Pendiente'}</Text>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                            style={styles.deleteButton}
-                            onPress={onDelete}
-                        >
+                        <TouchableOpacity style={styles.deleteButton} onPress={onDelete}>
                             <Text style={styles.deleteButtonText}>Borrar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.updateButton}
-                            onPress={updateState}
-                        >
-                            <Text style={styles.closeButtonText}>Marcar Entrega</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.closeButton}
-                            onPress={() => setModalVisible(false)}
-                        >
+                        {selectedItem?.entregado ? (
+                            <TouchableOpacity
+                                style={[styles.updateButton, { backgroundColor: colors.red }]}
+                                onPress={updateState}
+                            >
+                                <Text style={styles.updateButtonText}>Marcar No Entregado</Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                style={[styles.updateButton, { backgroundColor: colors.green }]}
+                                onPress={updateState}
+                            >
+                                <Text style={styles.updateButtonText}>Marcar Entrega</Text>
+                            </TouchableOpacity>
+                        )}
+                        <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
                             <Text style={styles.closeButtonText}>Cerrar</Text>
                         </TouchableOpacity>
-
                     </View>
                 </View>
             </View>
@@ -77,38 +78,47 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 20,
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
     deleteButton: {
         backgroundColor: colors.red,
         padding: 10,
         borderRadius: 10,
         marginTop: 10,
+        flex: 1,
+        marginRight: 5,
         alignItems: 'center',
     },
     updateButton: {
-        backgroundColor: colors.green,
         padding: 10,
         borderRadius: 10,
         marginTop: 10,
+        flex: 1,
+        marginHorizontal: 5,
         alignItems: 'center',
-    },
-    deleteButtonText: {
-        color: 'white',
-        fontSize: 16,
     },
     closeButton: {
         backgroundColor: colors.red,
         padding: 10,
         borderRadius: 10,
         marginTop: 10,
+        flex: 1,
+        marginLeft: 5,
         alignItems: 'center',
+    },
+    deleteButtonText: {
+        color: 'white',
+        fontSize: 16,
+    },
+    updateButtonText: {
+        color: 'white',
+        fontSize: 16,
     },
     closeButtonText: {
         color: 'white',
         fontSize: 16,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '40%',
     },
 });

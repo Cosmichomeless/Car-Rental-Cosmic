@@ -1,6 +1,6 @@
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, TextInput } from "react-native";
 import { colors } from "../../constants/colors";
 import { Localhost } from "../../constants/Localhost";
 import axios from "axios";
@@ -14,6 +14,7 @@ export default function ClientsView() {
     const [modalVisibleDetails, setDetailsVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const fetchData = async () => {
         try {
@@ -25,6 +26,7 @@ export default function ClientsView() {
             console.error('Error fetching data:', error);
         }
     };
+
     const deleteClient = async () => {
         if (!selectedItem || !selectedItem.clienteID) return;
         try {
@@ -40,12 +42,19 @@ export default function ClientsView() {
         fetchData();
     }, []);
 
+    const filteredData = data.filter(item => {
+        const fullName = `${item.nombre} ${item.apellido}`.toLowerCase();
+        return fullName.includes(searchTerm.toLowerCase()) ||
+            (item.email && item.email.toLowerCase().includes(searchTerm.toLowerCase()));
+    });
+
     return (
         <View style={styles.container}>
             {loading ? (
                 <ActivityIndicator size="large" color={colors.primary} />
             ) : (
                 <View style={styles.card}>
+
                     <DetailsClient
                         modalVisible={modalVisibleDetails}
                         setModalVisible={setDetailsVisible}
@@ -66,9 +75,15 @@ export default function ClientsView() {
                             <Ionicons name="refresh" size={24} color="black" />
                         </TouchableOpacity>
                     </View>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Busca cliente"
+                        value={searchTerm}
+                        onChangeText={setSearchTerm}
+                    />
                     <FlatList
                         style={{ width: '100%', marginTop: 10 }}
-                        data={data}
+                        data={filteredData}
                         renderItem={({ item }) => (
                             <ItemClient
                                 title={`Cliente: ${item.nombre} ${item.apellido}`}
@@ -101,7 +116,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         margin: 10,
         width: '90%',
-        minHeight: '90%',
+        minHeight: '80%',
         justifyContent: "center",
         alignItems: "center",
         elevation: 5,
@@ -121,5 +136,16 @@ const styles = StyleSheet.create({
         color: "black",
         fontSize: 24,
         fontWeight: "bold",
+    },
+    input: {
+        width: '100%',
+        height: '6%',
+        padding: 10,
+        borderWidth: 1,
+        backgroundColor: colors.white,
+        borderColor: colors.data,
+        borderRadius: 10,
+        marginBottom: 10,
+        marginTop: 20,
     },
 });
