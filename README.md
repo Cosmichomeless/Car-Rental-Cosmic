@@ -1,38 +1,64 @@
-# 🧠 Análisis DAFO Inteligente
+# 🚗 Aplicación Alquiler de Coches
 
-Este proyecto es una herramienta interactiva que permite realizar un Análisis DAFO (Debilidades, Amenazas, Fortalezas y Oportunidades) de manera inteligente y visual. Está desarrollado utilizando HTML, CSS y JavaScript para ofrecer una interfaz simple, dinámica y fácil de usar.
-<p align="Center"> <a href="https://cosmichomeless.github.io/SmartSWOT/"><img src="https://github.com/Cosmichomeless/SmartSWOT/blob/main/DAFO.png" style="height: 60%; width:60%;"/></a>
+Esta es una **aplicación web** para la gestión completa de un servicio de alquiler de vehículos. Pensada para uso por un **administrador** en tabletas y dispositivos de escritorio, permite almacenar y controlar toda la información de clientes, vehículos, pagos y alquileres.
 
-https://cosmichomeless.github.io/SmartSWOT/
+<p align="center">
+  <img src="banner.png" alt="Banner Alquiler de Coches" style="width:60%; height:auto;"/>
+</p>
+
+## 📄 Descripción
+
+El proyecto consiste en una herramienta CRUD que facilita al administrador:
+1. **Gestión de Clientes**: Alta, baja, edición y listado de clientes (datos personales, contacto…).  
+2. **Formas de Pago**: Definición y selección de métodos (tarjeta, efectivo, transferencia…).  
+3. **Gestión de Vehículos**: Registro del parque móvil con matrícula, marca, modelo, color, extras (aire, silla bebé…), tipo de motor (gasolina, diésel, híbrido, eléctrico…).  
+4. **Historial de Alquileres**: Consulta y seguimiento de cada alquiler por cliente y por vehículo, con estados (activo / entregado).  
+5. **Dashboard Principal**: Vista general con métricas clave (total clientes, total vehículos, total alquileres, ingresos mensuales) y últimos 5 alquileres.  
+
+> **Optimizado para tablet**: Diseño responsive adaptado a pantallas de 7″ a 12″.
 
 ## 🚀 Características
 
-- **Interfaz amigable**: Diseño sencillo e intuitivo para realizar un análisis DAFO sin complicaciones.
-- **Interactividad**: La aplicación permite a los usuarios agregar, editar y eliminar elementos de cada cuadrante del DAFO.
-- **Responsividad**: Totalmente adaptado para funcionar en dispositivos móviles y de escritorio.
-- **Almacenamiento local**: Guarda los resultados del análisis en el navegador para acceder a ellos más tarde.
+- **CRUD completo** de clientes, vehículos, formas de pago y alquileres.  
+- **Búsqueda y filtrado** en tablas (por nombre, matrícula o estado).  
+- **Dashboard interactivo** con gráficos de ingresos y accesos directos a cada módulo.  
+- **Almacenamiento local** durante desarrollo (próxima versión en servidor).  
+- **Interfaz intuitiva**: Formularios sencillos, validaciones en tiempo real y feedback claro.
 
 ## 🔧 Tecnologías Utilizadas
 
-- **HTML5**: Estructura del contenido de la página.
-- **CSS3**: Estilización y disposición visual.
-- **JavaScript**: Lógica para la interacción dinámica del usuario.
+- **HTML5**: Estructura semántica y accesible.  
+- **CSS3** (Flexbox, Grid): Maquetación responsive y tematización.  
+- **JavaScript** (ES6+): Lógica de interacción, manipulación del DOM y gestión de datos.  
+- **Chart.js**: Gráficos de barras para ingresos mensuales.  
+- **LocalStorage** (para prototipado): Persistencia de datos en el navegador.
 
- ## 🎯 Futuras Mejoras
+## 📖 Manual de Usuario
 
-- Implementar una funcionalidad para exportar el análisis a PDF.
-- Añadir la opción de compartir los resultados en redes sociales.
-- Mejorar el sistema de guardado utilizando almacenamiento en la nube.
-- Añadir temas de colores personalizados para la interfaz.
+Consulta el manual de usuario completo para aprender a navegar y explotar todas las funcionalidades de la aplicación:  
+[Manual de Usuario (PDF)](./Manual%20de%20Usuario.pdf) :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
+
+## 🎯 Futuras Mejoras
+
+- **Implementar backend** con API REST y base de datos (Node.js, Express, MongoDB/MySQL).  
+- **Autenticación y roles** (administrador vs. cliente).  
+- **App móvil nativa** (React Native / Flutter) para que los usuarios finales puedan reservar directamente.  
+- **Exportar informes** en PDF o Excel.  
+- **Notificaciones por email/SMS** para recordatorios de devolución.
 
 ## 🤝 Contribuciones
 
-¡Las contribuciones son bienvenidas! Si tienes ideas o mejoras, no dudes en hacer un fork de este repositorio y enviar un pull request. También puedes abrir un issue para discutir cualquier cambio.
+¡Las contribuciones son bienvenidas!  
+1. Haz un fork de este repositorio.  
+2. Crea una rama con tu feature o mejora: `git checkout -b feature/nueva-funcionalidad`  
+3. Realiza tus cambios y haz commit: `git commit -m "Añade X"`  
+4. Envía un pull request describiendo tu propuesta.  
 
+También puedes abrir un [issue](#) para sugerir cambios o reportar errores.
 
-## 🌟 Cómo Usar
+## 🌟 Cómo Empezar
 
-Clona este repositorio en tu máquina local:
-
-```bash
-https://github.com/Cosmichomeless/SmartSWOT.git
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/TU_USUARIO/rental-car-app.git
+   cd rental-car-app
