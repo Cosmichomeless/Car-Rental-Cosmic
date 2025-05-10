@@ -36,7 +36,7 @@ El proyecto consiste en una herramienta CRUD que facilita al administrador:
 ## 📖 Manual de Usuario
 
 Consulta el manual de usuario completo para aprender a navegar y explotar todas las funcionalidades de la aplicación:  
-[Manual de Usuario (PDF)](./Manual%20de%20Usuario.pdf) 
+[Manual de Usuario (PDF)](./User_Guide.pdf) 
 
 ## 🎯 Futuras Mejoras
 
