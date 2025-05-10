@@ -3,7 +3,7 @@
 Esta es una **aplicación web** para la gestión completa de un servicio de alquiler de vehículos. Pensada para uso por un **administrador** en tabletas y dispositivos de escritorio, permite almacenar y controlar toda la información de clientes, vehículos, pagos y alquileres.
 
 <p align="center">
-  <img src="banner.png" alt="Banner Alquiler de Coches" style="width:60%; height:auto;"/>
+  <img src="thumbnail.png" alt="Banner Alquiler de Coches" style="width:60%; height:auto;"/>
 </p>
 
 ## 📄 Descripción
@@ -36,7 +36,7 @@ El proyecto consiste en una herramienta CRUD que facilita al administrador:
 ## 📖 Manual de Usuario
 
 Consulta el manual de usuario completo para aprender a navegar y explotar todas las funcionalidades de la aplicación:  
-[Manual de Usuario (PDF)](./Manual%20de%20Usuario.pdf) :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
+[Manual de Usuario (PDF)](./Manual%20de%20Usuario.pdf) 
 
 ## 🎯 Futuras Mejoras
 
